@@ -6,8 +6,8 @@ namespace Bolighoesteren
     [JsonObject("appsettings")]
     internal class Appsettings
     {
-        [JsonProperty("Url")]
-        public string Url { get; set; }
+        [JsonProperty("FilterName")]
+        public FilterName FilterName { get; set; } = FilterName.edc;
 
         [JsonProperty("Console")]
         public bool Console { get; set; } = true;

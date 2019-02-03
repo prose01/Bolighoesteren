@@ -128,18 +128,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractService.cs" />
     <Compile Include="Appsettings.cs" />
-    <Compile Include="Client.cs" />
-    <Compile Include="ConcreteServiceFactory.cs" />
+    <Compile Include="FilterService.cs" />
+    <Compile Include="ConcreteFilterFactory.cs" />
+    <Compile Include="FilterName.cs" />
     <Compile Include="HtmlAgilityPackService.cs" />
     <Compile Include="Postcode.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Property.cs" />
-    <Compile Include="AbstractServiceFactory.cs" />
-    <Compile Include="Service_edc.cs" />
-    <Compile Include="Service_home.cs" />
+    <Compile Include="AbstractFilterFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -170,6 +167,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FilterLibrary\FilterLibrary.csproj">
+      <Project>{63a4616a-9dcc-41c7-bbc6-7ac950defb5d}</Project>
+      <Name>FilterLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

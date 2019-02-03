@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using FilterLibrary;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +9,7 @@ namespace Bolighoesteren
 {
     public class Program
     {
-        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
         static void Main(string[] args)
         {
@@ -17,7 +18,7 @@ namespace Bolighoesteren
                 // Get the execution directory
                 Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
 
-                logger.Info("Starter Bolighoesteren.");
+                //_logger.Info("Starter Bolighoesteren.");
 
                 string json = File.ReadAllText("appsettings.json");
                 var settings = JsonConvert.DeserializeObject<Appsettings>(json);
@@ -35,35 +36,24 @@ namespace Bolighoesteren
 
                 foreach (var postcode in settings.Postnumre)
                 {
-                    Thread.Sleep(settings.ThreadSleep);
+                    //Thread.Sleep(settings.ThreadSleep);
 
                     Postcode item = new Postcode() { Postnummer = postcode };
 
-                    List<Property> properties = new List<Property>();
+                    List<IProperty> properties = new List<IProperty>();
 
-                    var url = settings.Url + "?postnr=" + postcode + "&antal=1000&side=1#lstsor";
+                    AbstractFilterFactory factory = new ConcreteFilterFactory();
+                    FilterService client = new FilterService(_logger, factory, settings.FilterName, postcode);
 
-                    HtmlAgilityPack.HtmlWeb web = new HtmlAgilityPack.HtmlWeb();
-                    HtmlAgilityPack.HtmlDocument doc = web.Load(url);
+                    properties = client.GetAddress(properties);
 
-                    HtmlAgilityPackService service = new HtmlAgilityPackService(logger);
+                    properties = client.GetPrice(properties);
 
-                    properties = service.GetAddress(doc, properties);
+                    properties = client.GetPhoto(properties, photoFolderPath);
 
+                    properties = client.GetLink(properties);
 
-                    // Abstract stuff
-                    AbstractServiceFactory factory = new ConcreteServiceFactory();
-                    Client client = new Client(factory);
-                    var tt = client.GetAddress(doc, properties);
-
-
-                    properties = service.GetPrice(doc, properties);
-
-                    properties = service.GetPhoto(doc, properties, photoFolderPath);
-
-                    properties = service.GetLink(doc, properties);
-
-                    properties = service.GetTableInfo(doc, properties);
+                    properties = client.GetTableInfo(properties);
 
                     item.Ejendomme = properties;
 
@@ -83,11 +73,11 @@ namespace Bolighoesteren
                     Console.ReadLine();
                 }
 
-                logger.Info("Lukker Bolighoesteren.");
+                //_logger.Info("Lukker Bolighoesteren.");
             }
             catch (Exception ex)
             {
-                logger.Error(ex, "Something bad happened");
+                _logger.Error(ex, "Something bad happened");
                 //Console.WriteLine(ex);
             }
         }
