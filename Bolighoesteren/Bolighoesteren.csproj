@@ -132,7 +132,6 @@
     <Compile Include="FilterService.cs" />
     <Compile Include="ConcreteFilterFactory.cs" />
     <Compile Include="FilterName.cs" />
-    <Compile Include="HtmlAgilityPackService.cs" />
     <Compile Include="Postcode.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
