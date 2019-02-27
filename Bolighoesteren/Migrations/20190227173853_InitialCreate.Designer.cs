@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bolighoesteren.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20190227155843_newPropety")]
-    partial class newPropety
+    [Migration("20190227173853_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -44,7 +44,7 @@ namespace Bolighoesteren.Migrations
 
                     b.Property<string>("KvadratmeterPris");
 
-                    b.Property<int>("Liggetid");
+                    b.Property<string>("Liggetid");
 
                     b.Property<string>("Link");
 
@@ -60,7 +60,7 @@ namespace Bolighoesteren.Migrations
 
                     b.HasIndex("Postnummer");
 
-                    b.ToTable("Properties");
+                    b.ToTable("Ejendomme");
                 });
 #pragma warning restore 612, 618
         }

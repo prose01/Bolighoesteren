@@ -194,21 +194,9 @@
     <Compile Include="FilterService.cs" />
     <Compile Include="ConcreteFilterFactory.cs" />
     <Compile Include="FilterName.cs" />
-    <Compile Include="Migrations\20190227111646_InitialCreate.cs" />
-    <Compile Include="Migrations\20190227111646_InitialCreate.designer.cs">
-      <DependentUpon>20190227111646_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20190227155843_newPropety.cs" />
-    <Compile Include="Migrations\20190227155843_newPropety.designer.cs">
-      <DependentUpon>20190227155843_newPropety.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20190227165655_updatePropety.cs" />
-    <Compile Include="Migrations\20190227165655_updatePropety.designer.cs">
-      <DependentUpon>20190227165655_updatePropety.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20190227172355_Ejendomme.cs" />
-    <Compile Include="Migrations\20190227172355_Ejendomme.designer.cs">
-      <DependentUpon>20190227172355_Ejendomme.cs</DependentUpon>
+    <Compile Include="Migrations\20190227173853_InitialCreate.cs" />
+    <Compile Include="Migrations\20190227173853_InitialCreate.designer.cs">
+      <DependentUpon>20190227173853_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ContextModelSnapshot.cs" />
     <Compile Include="Postcode.cs" />
@@ -252,6 +240,7 @@
       <Name>FilterLibrary</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

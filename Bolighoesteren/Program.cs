@@ -44,7 +44,7 @@ namespace Bolighoesteren
                     {
                         if (int.TryParse(postcode, out int postnummer))
                         {
-                            dbProperties = context.Properties.OrderByDescending(p => p.Postnummer == postnummer).ToList();
+                            dbProperties = context.Ejendomme.OrderByDescending(p => p.Postnummer == postnummer).ToList();
                         }
                     }
                     
@@ -88,12 +88,12 @@ namespace Bolighoesteren
                                     dbProperty.Link = property.Link;
                                     dbProperty.Foto = property.Foto;
                                     dbProperty.HashCode = property.HashCode;
-                                    context.Properties.Update(dbProperty);
+                                    context.Ejendomme.Update(dbProperty);
                                     context.SaveChanges();
                                 }
                                 else
                                 {
-                                    context.Properties.Add((Ejendom)property);
+                                    context.Ejendomme.Add((Ejendom)property);
                                     context.SaveChanges();
                                 }
                             }

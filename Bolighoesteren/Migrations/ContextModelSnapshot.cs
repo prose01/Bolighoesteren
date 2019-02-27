@@ -58,7 +58,7 @@ namespace Bolighoesteren.Migrations
 
                     b.HasIndex("Postnummer");
 
-                    b.ToTable("Properties");
+                    b.ToTable("Ejendomme");
                 });
 #pragma warning restore 612, 618
         }

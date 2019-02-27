@@ -9,7 +9,7 @@ namespace Bolighoesteren
     {
         private string _connectionString;
 
-        public DbSet<Ejendom> Properties { get; set; }
+        public DbSet<Ejendom> Ejendomme { get; set; }
 
         public Context()
         {
