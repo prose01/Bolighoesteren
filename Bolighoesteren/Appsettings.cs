@@ -6,6 +6,15 @@ namespace Bolighoesteren
     [JsonObject("appsettings")]
     internal class Appsettings
     {
+        [JsonProperty("SaveToFile")]
+        public bool SaveToFile { get; set; } = false;
+
+        [JsonProperty("SaveToDatabase")]
+        public bool SaveToDatabase { get; set; } = false;
+
+        [JsonProperty("ConnectionString")]
+        public string ConnectionString { get; set; }
+        
         [JsonProperty("FilterName")]
         public FilterName FilterName { get; set; } = FilterName.edc;
 

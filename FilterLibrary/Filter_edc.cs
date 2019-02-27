@@ -19,7 +19,7 @@ namespace FilterLibrary
             _doc = _web.Load(url);
         }
 
-        public override List<IProperty> GetAddress(List<IProperty> properties)
+        public override List<IEjendom> GetAddress(List<IEjendom> properties)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace FilterLibrary
                 {
                     if (item.InnerText.Any(char.IsDigit))
                     {
-                        properties.Add(new Property { Address = item.InnerText });
+                        properties.Add(new Ejendom { Adresse = item.InnerText });
                         //Console.WriteLine(item.InnerText);
                     }
                 }
@@ -44,7 +44,7 @@ namespace FilterLibrary
             return properties;
         }
 
-        public override List<IProperty> GetPrice(List<IProperty> properties)
+        public override List<IEjendom> GetPrice(List<IEjendom> properties)
         {
             try
             {
@@ -61,7 +61,7 @@ namespace FilterLibrary
                     {
                         price = price.Insert(price.Length - 3, ".");
                         if (price.Length > 7) price = price.Insert(price.Length - 7, ".");
-                        properties[i].Price = price;
+                        properties[i].Pris = price;
                         i++;
                         //Console.WriteLine(price);
                     }
@@ -76,7 +76,7 @@ namespace FilterLibrary
             return properties;
         }
 
-        public override List<IProperty> GetPhoto(List<IProperty> properties, string photoFolderPath)
+        public override List<IEjendom> GetPhoto(List<IEjendom> properties, string photoFolderPath)
         {
             try
             {
@@ -103,7 +103,7 @@ namespace FilterLibrary
                             string fileName = path.Substring(lastIndex + 1);
 
                             client.DownloadFile(new Uri(path), $"{photoFolderPath}\\{fileName}");
-                            properties[i].Photo = path;
+                            properties[i].Foto = path;
                             i++;
                         }
                     }
@@ -120,7 +120,7 @@ namespace FilterLibrary
             return properties;
         }
 
-        public override List<IProperty> GetLink(List<IProperty> properties)
+        public override List<IEjendom> GetLink(List<IEjendom> properties)
         {
             try
             {
@@ -147,7 +147,7 @@ namespace FilterLibrary
             return properties;
         }
 
-        public override List<IProperty> GetTableInfo(List<IProperty> properties)
+        public override List<IEjendom> GetTableInfo(List<IEjendom> properties)
         {
             try
             {
@@ -176,9 +176,38 @@ namespace FilterLibrary
 
                         if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(value))
                         {
-                            if (properties[i].tableInfo == null) properties[i].tableInfo = new Dictionary<string, string>();
+                            if (int.TryParse(value, out int val)) { }
 
-                            properties[i].tableInfo.Add(key, value);
+                            switch (key)
+                            {
+                                case "m²":
+                                    properties[i].Areal = val;
+                                    break;
+                                case "Grund":
+                                    properties[i].GrundAreal = val;
+                                    break;
+                                case "Rum":
+                                    properties[i].Rum = val;
+                                    break;
+                                case "Byggeår":
+                                    properties[i].Byggeår = val;
+                                    break;
+                                case "Liggetid":
+                                    properties[i].Liggetid = value;
+                                    break;
+                                case "+/-":
+                                    properties[i].Prisudvikling = value;
+                                    break;
+                                case "Pris/m²":
+                                    properties[i].KvadratmeterPris = value;
+                                    break;
+                                case "Ejerudgifter pr. md.":
+                                    properties[i].Ejerudgifter = value;
+                                    break;
+                                case "Boligyd. / Forbrugsafh.":
+                                    properties[i].BoligydForbrugsafh = value;
+                                    break;
+                            }
                         }
                     }
 

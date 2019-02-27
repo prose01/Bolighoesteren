@@ -4,14 +4,14 @@ namespace FilterLibrary
 {
     public abstract class AbstractFilter
     {
-        public abstract List<IProperty> GetAddress(List<IProperty> properties);
+        public abstract List<IEjendom> GetAddress(List<IEjendom> properties);
 
-        public abstract List<IProperty> GetPrice(List<IProperty> properties);
+        public abstract List<IEjendom> GetPrice(List<IEjendom> properties);
 
-        public abstract List<IProperty> GetPhoto(List<IProperty> properties, string photoFolderPath);
+        public abstract List<IEjendom> GetPhoto(List<IEjendom> properties, string photoFolderPath);
 
-        public abstract List<IProperty> GetLink(List<IProperty> properties);
+        public abstract List<IEjendom> GetLink(List<IEjendom> properties);
 
-        public abstract List<IProperty> GetTableInfo(List<IProperty> properties);
+        public abstract List<IEjendom> GetTableInfo(List<IEjendom> properties);
     }
 }

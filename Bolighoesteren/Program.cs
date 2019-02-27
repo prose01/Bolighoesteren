@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 
 namespace Bolighoesteren
@@ -18,7 +19,7 @@ namespace Bolighoesteren
                 // Get the execution directory
                 Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
 
-                //_logger.Info("Starter Bolighoesteren.");
+                _logger.Info("Starter Bolighoesteren.");
 
                 string json = File.ReadAllText("appsettings.json");
                 var settings = JsonConvert.DeserializeObject<Appsettings>(json);
@@ -31,16 +32,23 @@ namespace Bolighoesteren
                 Directory.CreateDirectory(dataFolderPath);
                 Directory.CreateDirectory(photoFolderPath);
 
-                // Collect data
                 List<Postcode> postcodes = new List<Postcode>();
 
                 foreach (var postcode in settings.Postnumre)
                 {
-                    //Thread.Sleep(settings.ThreadSleep);
+                    Thread.Sleep(settings.ThreadSleep);
 
-                    Postcode item = new Postcode() { Postnummer = postcode };
+                    List<Ejendom> dbProperties = new List<Ejendom>();
 
-                    List<IProperty> properties = new List<IProperty>();
+                    using (var context = new Context())
+                    {
+                        if (int.TryParse(postcode, out int postnummer))
+                        {
+                            dbProperties = context.Properties.OrderByDescending(p => p.Postnummer == postnummer).ToList();
+                        }
+                    }
+                    
+                    List<IEjendom> properties = new List<IEjendom>();
 
                     AbstractFilterFactory factory = new ConcreteFilterFactory();
                     FilterService client = new FilterService(_logger, factory, settings.FilterName, postcode);
@@ -55,30 +63,80 @@ namespace Bolighoesteren
 
                     properties = client.GetTableInfo(properties);
 
-                    item.Ejendomme = properties;
+                    if (settings.SaveToDatabase)
+                    {
+                        foreach (var property in properties)
+                        {
+                            if (int.TryParse(postcode, out int postnummer))
+                            {
+                                property.Postnummer = postnummer;
+                            }
+                            var prop_json = JsonConvert.SerializeObject(property);
+                            property.HashCode = prop_json.GetHashCode();
 
-                    postcodes.Add(item);
+                            using (var context = new Context())
+                            {
+                                if (dbProperties.SingleOrDefault(p => p.Adresse == property.Adresse && p.HashCode == property.HashCode) != null)
+                                {
+                                    continue;
+                                }
+
+                                if (dbProperties.SingleOrDefault(p => p.Adresse == property.Adresse && p.HashCode != property.HashCode) != null)
+                                {
+                                    var dbProperty = dbProperties.SingleOrDefault(p => p.Adresse == property.Adresse && p.HashCode != property.HashCode);
+                                    dbProperty.Pris = property.Pris;
+                                    dbProperty.Link = property.Link;
+                                    dbProperty.Foto = property.Foto;
+                                    dbProperty.HashCode = property.HashCode;
+                                    context.Properties.Update(dbProperty);
+                                    context.SaveChanges();
+                                }
+                                else
+                                {
+                                    context.Properties.Add((Ejendom)property);
+                                    context.SaveChanges();
+                                }
+                            }
+
+                            if (settings.Console)
+                            {
+                                Console.WriteLine(JsonConvert.SerializeObject(property));
+                                Console.ReadLine();
+                            }
+                        }
+                    }
+                    
+                    if(settings.SaveToFile)
+                    {
+                        // Collect data
+                        Postcode item = new Postcode() { Postnummer = postcode };
+
+                        item.Ejendomme = properties;
+
+                        postcodes.Add(item);                        
+                    }
                 }
 
-                // Write json to file
-                using (StreamWriter writer = new StreamWriter(dataFolderPath + "\\" + DateTime.Today.ToString("dd -MM-yyyy") + "-BoligData.json"))
+                if(settings.SaveToFile)
                 {
-                    writer.Write(JsonConvert.SerializeObject(postcodes));
+                    // Write json to file
+                    using (StreamWriter writer = new StreamWriter(dataFolderPath + "\\" + DateTime.Today.ToString("dd -MM-yyyy") + "-BoligData.json"))
+                    {
+                        writer.Write(JsonConvert.SerializeObject(postcodes));
+                    }
                 }
 
                 if (settings.Console)
                 {
                     Console.WriteLine(JsonConvert.SerializeObject(postcodes));
-
                     Console.ReadLine();
                 }
 
-                //_logger.Info("Lukker Bolighoesteren.");
+                _logger.Info("Lukker Bolighoesteren.");
             }
             catch (Exception ex)
             {
                 _logger.Error(ex, "Something bad happened");
-                //Console.WriteLine(ex);
             }
         }
     }

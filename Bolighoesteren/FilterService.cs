@@ -12,27 +12,27 @@ namespace Bolighoesteren
             _abstractFilter = factory.CreateFilter(logger, filterName, postcode);
         }
 
-        public List<IProperty> GetAddress(List<IProperty> properties)
+        public List<IEjendom> GetAddress(List<IEjendom> properties)
         {
             return _abstractFilter.GetAddress(properties);
         }
 
-        public List<IProperty> GetPrice(List<IProperty> properties)
+        public List<IEjendom> GetPrice(List<IEjendom> properties)
         {
             return _abstractFilter.GetPrice(properties);
         }
         
-        public List<IProperty> GetPhoto(List<IProperty> properties, string photoFolderPath)
+        public List<IEjendom> GetPhoto(List<IEjendom> properties, string photoFolderPath)
         {
             return _abstractFilter.GetPhoto(properties, photoFolderPath);
         }
 
-        public List<IProperty> GetLink(List<IProperty> properties)
+        public List<IEjendom> GetLink(List<IEjendom> properties)
         {
             return _abstractFilter.GetLink(properties);
         }
 
-        public List<IProperty> GetTableInfo(List<IProperty> properties)
+        public List<IEjendom> GetTableInfo(List<IEjendom> properties)
         {
             return _abstractFilter.GetTableInfo(properties);
         }
