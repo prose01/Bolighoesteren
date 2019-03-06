@@ -191,6 +191,7 @@
   <ItemGroup>
     <Compile Include="Appsettings.cs" />
     <Compile Include="Data\Context.cs" />
+    <Compile Include="Data\PropertyRepository.cs" />
     <Compile Include="FilterService.cs" />
     <Compile Include="ConcreteFilterFactory.cs" />
     <Compile Include="FilterName.cs" />

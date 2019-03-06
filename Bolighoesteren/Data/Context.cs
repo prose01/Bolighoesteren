@@ -27,6 +27,9 @@ namespace Bolighoesteren
         {
             modelBuilder.Entity<Ejendom>()
                 .HasIndex(p => p.Postnummer);
+
+            modelBuilder.Entity<Ejendom>()
+                .HasIndex(p => p.Adresse);
         }
     }
 }

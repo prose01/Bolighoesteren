@@ -1,4 +1,5 @@
-﻿using FilterLibrary;
+﻿using Bolighoesteren.Data;
+using FilterLibrary;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -65,50 +66,19 @@ namespace Bolighoesteren
 
                     if (settings.SaveToDatabase)
                     {
+                        PropertyRepository repo = new PropertyRepository();
+
+                        dbProperties = repo.RemoveOrphanedProperties(dbProperties, properties);
+
                         foreach (var property in properties)
                         {
-                            if (int.TryParse(postcode, out int postnummer))
-                            {
-                                property.Postnummer = postnummer;
-                            }
-                            var prop_json = JsonConvert.SerializeObject(property);
-                            property.HashCode = prop_json.GetHashCode();
-
-                            using (var context = new Context())
-                            {
-                                if (dbProperties.SingleOrDefault(p => p.Adresse == property.Adresse && p.HashCode == property.HashCode) != null)
-                                {
-                                    continue;
-                                }
-
-                                if (dbProperties.SingleOrDefault(p => p.Adresse == property.Adresse && p.HashCode != property.HashCode) != null)
-                                {
-                                    var dbProperty = dbProperties.SingleOrDefault(p => p.Adresse == property.Adresse && p.HashCode != property.HashCode);
-                                    dbProperty.Pris = property.Pris;
-                                    dbProperty.Link = property.Link;
-                                    dbProperty.Foto = property.Foto;
-                                    dbProperty.HashCode = property.HashCode;
-                                    context.Ejendomme.Update(dbProperty);
-                                    context.SaveChanges();
-                                }
-                                else
-                                {
-                                    context.Ejendomme.Add((Ejendom)property);
-                                    context.SaveChanges();
-                                }
-                            }
-
-                            if (settings.Console)
-                            {
-                                Console.WriteLine(JsonConvert.SerializeObject(property));
-                                Console.ReadLine();
-                            }
+                            repo.SavePropertyToDatabase(property, dbProperties, postcode, settings.Console);
                         }
                     }
                     
                     if(settings.SaveToFile)
                     {
-                        // Collect data
+                        // Collect data by Postcode so its easier to read the json.
                         Postcode item = new Postcode() { Postnummer = postcode };
 
                         item.Ejendomme = properties;
@@ -119,7 +89,7 @@ namespace Bolighoesteren
 
                 if(settings.SaveToFile)
                 {
-                    // Write json to file
+                    // Write json to file.
                     using (StreamWriter writer = new StreamWriter(dataFolderPath + "\\" + DateTime.Today.ToString("dd -MM-yyyy") + "-BoligData.json"))
                     {
                         writer.Write(JsonConvert.SerializeObject(postcodes));
