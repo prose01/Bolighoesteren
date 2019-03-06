@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text.RegularExpressions;
 
 namespace FilterLibrary
 {
-    public class Filter_home : AbstractFilter
+    public class Filter_real : AbstractFilter
     {
         private readonly NLog.Logger _logger;
         private readonly HtmlAgilityPack.HtmlWeb _web = new HtmlAgilityPack.HtmlWeb();
         private readonly HtmlAgilityPack.HtmlDocument _doc;
 
-        public Filter_home(NLog.Logger logger, string postcode)
+        public Filter_real(NLog.Logger logger, string postcode)
         {
             _logger = logger;
-            var url = "https://www.edc.dk/sog/?postnr=" + postcode + "&antal=1000&side=1#lstsor";
+            var url = "https://www.realmaeglerne.dk/bolig?search=" + postcode + "&pricemin=&pricemax=&boligarealmin=&boligarealmax=&grundarealmin=&grundarealmax=&subsidymin=&subsidymax=";
             _doc = _web.Load(url);
         }
 
@@ -61,7 +59,7 @@ namespace FilterLibrary
                     {
                         price = price.Insert(price.Length - 3, ".");
                         if (price.Length > 7) price = price.Insert(price.Length - 7, ".");
-                        properties[i].Foto = price;
+                        properties[i].Pris = price;
                         i++;
                         //Console.WriteLine(price);
                     }

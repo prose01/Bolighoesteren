@@ -136,8 +136,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractFilter.cs" />
+    <Compile Include="Filter_boligsiden.cs" />
     <Compile Include="Filter_edc.cs" />
-    <Compile Include="Filter_home.cs" />
+    <Compile Include="Filter_estate.cs" />
+    <Compile Include="Filter_real.cs" />
     <Compile Include="IProperty.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ejendom.cs" />
