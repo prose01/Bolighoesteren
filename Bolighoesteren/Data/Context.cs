@@ -16,6 +16,9 @@ namespace Bolighoesteren
             string json = File.ReadAllText("appsettings.json");
             var settings = JsonConvert.DeserializeObject<Appsettings>(json);
             _connectionString = settings.ConnectionString ?? "Data Source=BolighoesterenDB";
+
+            // Create the database if it doesn't exist
+            this.Database.Migrate();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
