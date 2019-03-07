@@ -14,8 +14,17 @@ namespace Bolighoesteren
                     case FilterName.edc 
                         : return new Filter_edc(logger, postcode);
 
-                    case FilterName.home
-                        : return new Filter_home(logger, postcode);
+                    case FilterName.real
+                        :
+                        return new Filter_real(logger, postcode);
+
+                    case FilterName.estate 
+                        :
+                        return new Filter_estate(logger, postcode);
+
+                    case FilterName.boligsiden
+                        :
+                        return new Filter_boligsiden(logger, postcode);
                 }
             }
             catch (Exception ex)

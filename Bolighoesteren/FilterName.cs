@@ -3,6 +3,8 @@
     public enum FilterName
     {
         edc = 0,
-        home = 1
+        estate = 1,
+        boligsiden = 2,
+        real = 3
     }
 }
