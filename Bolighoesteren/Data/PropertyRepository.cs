@@ -66,5 +66,18 @@ namespace Bolighoesteren.Data
                 Console.ReadLine();
             }
         }
+
+        public List<Ejendom> GetPropertiesByPostCode(string postcode)
+        {
+            using (var context = new Context())
+            {
+                if (int.TryParse(postcode, out int postnummer))
+                {
+                    return context.Ejendomme.OrderByDescending(p => p.Postnummer == postnummer).ToList();
+                }
+
+                return null;
+            }
+        }
     }
 }

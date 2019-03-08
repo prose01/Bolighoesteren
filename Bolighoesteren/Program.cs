@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading;
 
 namespace Bolighoesteren
@@ -38,17 +37,7 @@ namespace Bolighoesteren
                 foreach (var postcode in settings.Postnumre)
                 {
                     Thread.Sleep(settings.ThreadSleep);
-
-                    List<Ejendom> dbProperties = new List<Ejendom>();
-
-                    using (var context = new Context())
-                    {
-                        if (int.TryParse(postcode, out int postnummer))
-                        {
-                            dbProperties = context.Ejendomme.OrderByDescending(p => p.Postnummer == postnummer).ToList();
-                        }
-                    }
-                    
+                                        
                     List<IEjendom> properties = new List<IEjendom>();
 
                     AbstractFilterFactory factory = new ConcreteFilterFactory();
@@ -67,6 +56,8 @@ namespace Bolighoesteren
                     if (settings.SaveToDatabase)
                     {
                         PropertyRepository repo = new PropertyRepository();
+
+                        List<Ejendom> dbProperties = repo.GetPropertiesByPostCode(postcode);
 
                         dbProperties = repo.RemoveOrphanedProperties(dbProperties, properties);
 
