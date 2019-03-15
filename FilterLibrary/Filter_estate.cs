@@ -24,7 +24,7 @@ namespace FilterLibrary
             try
             {
                 // Address
-                var addressHeaders = _doc.DocumentNode.SelectNodes("//h2").ToList();
+                var addressHeaders = _doc.DocumentNode.SelectNodes("//section[@class='search-results-container']"); // Html Agility Pack understøtter endnu IKKE CSS selector som fx. ::before eller ::after så vi kan ikke finde <article>.
 
                 foreach (var item in addressHeaders)
                 {

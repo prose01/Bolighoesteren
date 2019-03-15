@@ -61,7 +61,7 @@ namespace FilterLibrary
                     {
                         price = price.Insert(price.Length - 3, ".");
                         if (price.Length > 7) price = price.Insert(price.Length - 7, ".");
-                        properties[i].Pris = price;
+                        properties[i].Pris = price.Trim();
                         i++;
                         //Console.WriteLine(price);
                     }

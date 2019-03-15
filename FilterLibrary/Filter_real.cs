@@ -24,13 +24,15 @@ namespace FilterLibrary
             try
             {
                 // Address
-                var addressHeaders = _doc.DocumentNode.SelectNodes("//h2").ToList();
+                var addressHeaders = _doc.DocumentNode.SelectNodes("//div[@class='data']/h4").ToList();
+                var city = _doc.DocumentNode.SelectNodes("//div[@class='data']/p[@data-attr='city']").ToList();
 
-                foreach (var item in addressHeaders)
+                if (addressHeaders.Count == city.Count)
                 {
-                    if (item.InnerText.Any(char.IsDigit))
+                    for (var i = 0; i < addressHeaders.Count; i++)
                     {
-                        properties.Add(new Ejendom { Adresse = item.InnerText });
+                        var adress = addressHeaders[i].InnerText + " " + city[i].InnerText;
+                        properties.Add(new Ejendom { Adresse = adress.Replace("\r", string.Empty) });
                         //Console.WriteLine(item.InnerText);
                     }
                 }
@@ -49,22 +51,14 @@ namespace FilterLibrary
             try
             {
                 // Price
-                var prices = _doc.DocumentNode.SelectNodes("//div[@class='propertyitem__price']").ToList();
+                var prices = _doc.DocumentNode.SelectNodes("//div[@class='price']/p/span[@data-attr='price']").ToList();
 
                 int i = 0;
                 foreach (var item in prices)
                 {
-                    var tempString = item.InnerText.Replace(".", string.Empty);
-                    var price = Regex.Match(tempString, @"\d+").Value;
-
-                    if (!string.IsNullOrEmpty(price))
-                    {
-                        price = price.Insert(price.Length - 3, ".");
-                        if (price.Length > 7) price = price.Insert(price.Length - 7, ".");
-                        properties[i].Pris = price;
-                        i++;
-                        //Console.WriteLine(price);
-                    }
+                    properties[i].Pris = item.InnerText.Replace("kr.", string.Empty).Trim();
+                    i++;
+                    //Console.WriteLine(price);
                 }
             }
             catch (Exception ex)
@@ -81,28 +75,20 @@ namespace FilterLibrary
             try
             {
                 // Photo
-                var photo = _doc.DocumentNode.SelectNodes("//*[@class='propertyitem__body--view']/span/img").ToList();
+                var photo = _doc.DocumentNode.SelectNodes("//*[@class='img-wrapper']/img").ToList();
 
                 int i = 0;
                 foreach (var item in photo)
                 {
-                    var path = item.Attributes["data-src"].Value;
+                    var path = item.Attributes["src"].Value;
 
                     if (!string.IsNullOrEmpty(path))
                     {
                         using (WebClient client = new WebClient())
                         {
-                            if (path.StartsWith("/Static/Images"))
-                            {
-                                continue;
-                            }
+                            string fileName = properties[i].Adresse;
 
-                            if (!path.StartsWith("http://")) path = @"http:" + path;
-
-                            var lastIndex = path.LastIndexOf(@"/");
-                            string fileName = path.Substring(lastIndex + 1);
-
-                            client.DownloadFile(new Uri(path), $"{photoFolderPath}\\{fileName}");
+                            client.DownloadFile(new Uri(path), $"{photoFolderPath}\\{properties[i].Adresse}.jpeg");
                             properties[i].Foto = path;
                             i++;
                         }
@@ -125,13 +111,13 @@ namespace FilterLibrary
             try
             {
                 // Links
-                var links = _doc.DocumentNode.SelectNodes("//*[@class='propertyitem propertyitem--list']/a").ToList();
+                var links = _doc.DocumentNode.SelectNodes("//*[@class='box']/a").ToList();
 
                 int i = 0;
                 foreach (var item in links)
                 {
                     var link = item.Attributes["href"].Value;
-                    if (!link.StartsWith("https://")) link = @"https://www.edc.dk" + link;
+                    if (!link.StartsWith("https://")) link = @"https://www.realmaeglerne.dk" + link;
                     properties[i].Link = link;
                     i++;
 
@@ -152,67 +138,23 @@ namespace FilterLibrary
             try
             {
                 // Table info
-                var tables = _doc.DocumentNode.SelectNodes("//*[@class='propertyitem__wrapper']/table").ToList();
+                var Ejerudgifter = _doc.DocumentNode.SelectNodes("//div[@class='price']/p").ToList();
 
                 int i = 0;
-                foreach (var table in tables)
+
+                foreach (var item in Ejerudgifter)
                 {
-                    for (int p = 0; p < table.ChildNodes[1].ChildNodes.Count; p++)
-                    {
-                        string key = string.Empty;
-                        string value = string.Empty;
-
-                        var th = table.ChildNodes[1].ChildNodes[p];
-                        if (th.Name == "th")
-                        {
-                            key = th.InnerText;
-                        }
-
-                        var td = table.ChildNodes[2].ChildNodes[p];
-                        if (td.Name == "td")
-                        {
-                            value = td.InnerText;
-                        }
-
-                        if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(value))
-                        {
-                            if (int.TryParse(value, out int val)) { }
-
-                            switch (key)
-                            {
-                                case "m²":
-                                    properties[i].Areal = val;
-                                    break;
-                                case "Grund":
-                                    properties[i].GrundAreal = val;
-                                    break;
-                                case "Rum":
-                                    properties[i].Rum = val;
-                                    break;
-                                case "Byggeår":
-                                    properties[i].Byggeår = val;
-                                    break;
-                                case "Liggetid":
-                                    properties[i].Liggetid = value;
-                                    break;
-                                case "+/-":
-                                    properties[i].Prisudvikling = value;
-                                    break;
-                                case "Pris/m²":
-                                    properties[i].KvadratmeterPris = value;
-                                    break;
-                                case "Ejerudgifter pr. md.":
-                                    properties[i].Ejerudgifter = value;
-                                    break;
-                                case "Boligyd. / Forbrugsafh.":
-                                    properties[i].BoligydForbrugsafh = value;
-                                    break;
-                            }
-                        }
-                    }
+                    var tempString = item.InnerText.Replace("Ejerudgift kr.", string.Empty).Trim();
+                    tempString = tempString.Replace(".", string.Empty);
+                    tempString = Regex.Match(tempString, @"\d+").Value;
+                    tempString = tempString.Insert(tempString.Length - 3, ".");
+                    properties[i].Ejerudgifter = tempString;
 
                     i++;
+                    //Console.WriteLine(price);
                 }
+                
+                var specs = _doc.DocumentNode.SelectNodes("//div[@class='data']/p[@data-attr='specs']").ToList();       // Kun nogle ejendomme har specs, og man skal trykke på "Se flere" før man kan se dem. Men htmlagilitypack kan IKKE klikke.
             }
             catch (Exception ex)
             {
