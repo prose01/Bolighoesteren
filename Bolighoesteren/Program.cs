@@ -37,21 +37,11 @@ namespace Bolighoesteren
                 foreach (var postcode in settings.Postnumre)
                 {
                     Thread.Sleep(settings.ThreadSleep);
-                                        
-                    List<IEjendom> properties = new List<IEjendom>();
 
                     AbstractFilterFactory factory = new ConcreteFilterFactory();
                     FilterService client = new FilterService(_logger, factory, settings.FilterName, postcode);
 
-                    properties = client.GetAddress(properties);
-
-                    properties = client.GetPrice(properties);
-
-                    properties = client.GetPhoto(properties, photoFolderPath);
-
-                    properties = client.GetLink(properties);
-
-                    properties = client.GetTableInfo(properties);
+                    var properties = client.GetProperties(postcode, photoFolderPath);
 
                     if (settings.SaveToDatabase)
                     {

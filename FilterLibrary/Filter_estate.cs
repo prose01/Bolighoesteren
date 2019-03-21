@@ -19,7 +19,12 @@ namespace FilterLibrary
             _doc = _web.Load(url);
         }
 
-        public override List<IEjendom> GetAddress(List<IEjendom> properties)
+        public override List<IEjendom> GetProperties(string postcode, string photoFolderPath)
+        {
+            throw new NotImplementedException();
+        }
+
+        private List<IEjendom> GetAddress(List<IEjendom> properties)
         {
             try
             {
@@ -44,7 +49,7 @@ namespace FilterLibrary
             return properties;
         }
 
-        public override List<IEjendom> GetPrice(List<IEjendom> properties)
+        private List<IEjendom> GetPrice(List<IEjendom> properties)
         {
             try
             {
@@ -76,7 +81,7 @@ namespace FilterLibrary
             return properties;
         }
 
-        public override List<IEjendom> GetPhoto(List<IEjendom> properties, string photoFolderPath)
+        private List<IEjendom> GetPhoto(List<IEjendom> properties, string photoFolderPath)
         {
             try
             {
@@ -120,7 +125,7 @@ namespace FilterLibrary
             return properties;
         }
 
-        public override List<IEjendom> GetLink(List<IEjendom> properties)
+        private List<IEjendom> GetLink(List<IEjendom> properties)
         {
             try
             {
@@ -147,7 +152,7 @@ namespace FilterLibrary
             return properties;
         }
 
-        public override List<IEjendom> GetTableInfo(List<IEjendom> properties)
+        private List<IEjendom> GetTableInfo(List<IEjendom> properties)
         {
             try
             {
