@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <PublishUrlHistory>C:\Temp\Bolighoesteren\|C:\Peter Rose - Private\Bolighoesteren\Temp\</PublishUrlHistory>
-    <InstallUrlHistory>\\Temp\Bolighoesteren\App\</InstallUrlHistory>
+    <PublishUrlHistory>C:\Temp\Bolighoesteren\click App\|C:\Temp\Bolighoesteren\App click\|C:\Temp\Bolighoesteren\App\|C:\Temp\Bolighoesteren\|C:\Peter Rose - Private\Bolighoesteren\Temp\</PublishUrlHistory>
+    <InstallUrlHistory>\\Temp\Bolighoesteren\App click\App\|\\Temp\Bolighoesteren\App\App\|\\Temp\Bolighoesteren\App\</InstallUrlHistory>
     <SupportUrlHistory />
     <UpdateUrlHistory />
     <BootstrapperUrlHistory />

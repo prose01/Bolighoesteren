@@ -11,9 +11,9 @@ namespace Bolighoesteren.Data
 
         public List<Ejendom> RemoveOrphanedProperties(List<Ejendom> dbProperties, List<IEjendom> properties)
         {
-            var orphanedProperties = dbProperties.Where(n => !properties.Select(n1 => n1.Adresse).Contains(n.Adresse));
+            var orphanedProperties = dbProperties.Where(dbProp => !properties.Select(newProp => newProp.Adresse).Contains(dbProp.Adresse));
 
-            if (orphanedProperties != null)
+            if (orphanedProperties.Count() > 0)
             {
                 using (var context = new Context())
                 {
@@ -24,7 +24,7 @@ namespace Bolighoesteren.Data
                 return dbProperties.Except(orphanedProperties).ToList();
             }
 
-            return null;
+            return dbProperties;
         }
 
         public void SavePropertyToDatabase(IEjendom property, List<Ejendom> dbProperties, string postcode,  bool console)
@@ -73,7 +73,7 @@ namespace Bolighoesteren.Data
             {
                 if (int.TryParse(postcode, out int postnummer))
                 {
-                    return context.Ejendomme.OrderByDescending(p => p.Postnummer == postnummer).ToList();
+                    return context.Ejendomme.Where(p => p.Postnummer == postnummer).ToList();
                 }
 
                 return null;

@@ -59,7 +59,8 @@ namespace Bolighoesteren
 
                         List<Ejendom> dbProperties = repo.GetPropertiesByPostCode(postcode);
 
-                        dbProperties = repo.RemoveOrphanedProperties(dbProperties, properties);
+                        if(dbProperties.Count > 0)
+                            dbProperties = repo.RemoveOrphanedProperties(dbProperties, properties);
 
                         foreach (var property in properties)
                         {

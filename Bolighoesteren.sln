@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bolighoesteren", "Bolighoesteren\Bolighoesteren.csproj", "{21E8D5F9-FF20-4723-AAF9-67AFF0E7135D}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Bolighoesteren-Setup", "Bolighoesteren-Setup\Bolighoesteren-Setup.vdproj", "{0E2EFD5D-FB3F-4D41-B29C-569EE3AD869F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilterLibrary", "FilterLibrary\FilterLibrary.csproj", "{63A4616A-9DCC-41C7-BBC6-7AC950DEFB5D}"
 EndProject
 Global
@@ -19,8 +17,6 @@ Global
 		{21E8D5F9-FF20-4723-AAF9-67AFF0E7135D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21E8D5F9-FF20-4723-AAF9-67AFF0E7135D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21E8D5F9-FF20-4723-AAF9-67AFF0E7135D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0E2EFD5D-FB3F-4D41-B29C-569EE3AD869F}.Debug|Any CPU.ActiveCfg = Debug
-		{0E2EFD5D-FB3F-4D41-B29C-569EE3AD869F}.Release|Any CPU.ActiveCfg = Release
 		{63A4616A-9DCC-41C7-BBC6-7AC950DEFB5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{63A4616A-9DCC-41C7-BBC6-7AC950DEFB5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63A4616A-9DCC-41C7-BBC6-7AC950DEFB5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
