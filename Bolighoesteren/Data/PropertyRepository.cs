@@ -38,11 +38,13 @@ namespace Bolighoesteren.Data
 
             using (var context = new Context())
             {
+                // If property is exactly the same do nothing.
                 if (dbProperties.SingleOrDefault(p => p.Adresse == property.Adresse && p.HashCode == property.HashCode) != null)
                 {
                     return;
                 }
 
+                // Update property if changed.
                 if (dbProperties.SingleOrDefault(p => p.Adresse == property.Adresse && p.HashCode != property.HashCode) != null)
                 {
                     var dbProperty = dbProperties.SingleOrDefault(p => p.Adresse == property.Adresse && p.HashCode != property.HashCode);
@@ -53,6 +55,8 @@ namespace Bolighoesteren.Data
                     context.Ejendomme.Update(dbProperty);
                     context.SaveChanges();
                 }
+
+                // Add new propertirs to DB.
                 else
                 {
                     context.Ejendomme.Add((Ejendom)property);

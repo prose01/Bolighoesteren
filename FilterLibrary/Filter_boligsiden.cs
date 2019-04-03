@@ -42,7 +42,7 @@ namespace FilterLibrary
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Something bad happened");
+                _logger.Error(ex, "Something bad happened in GetAddress");
                 //Console.WriteLine(ex);
             }
 
@@ -74,7 +74,7 @@ namespace FilterLibrary
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Something bad happened");
+                _logger.Error(ex, "Something bad happened in GetPrice");
                 //Console.WriteLine(ex);
             }
 
@@ -118,7 +118,7 @@ namespace FilterLibrary
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Something bad happened");
+                _logger.Error(ex, "Something bad happened in GetPhoto");
                 //Console.WriteLine(ex);
             }
 
@@ -145,7 +145,7 @@ namespace FilterLibrary
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Something bad happened");
+                _logger.Error(ex, "Something bad happened in GetLink");
                 //Console.WriteLine(ex);
             }
 
@@ -221,7 +221,7 @@ namespace FilterLibrary
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Something bad happened");
+                _logger.Error(ex, "Something bad happened in GetTableInfo");
                 //Console.WriteLine(ex);
             }
 

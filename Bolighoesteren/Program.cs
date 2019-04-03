@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 
 namespace Bolighoesteren
@@ -42,6 +43,9 @@ namespace Bolighoesteren
                     FilterService client = new FilterService(_logger, factory, settings.FilterName, postcode);
 
                     var properties = client.GetProperties(postcode, photoFolderPath);
+
+                    // Remove duplicate properties.
+                    properties = properties.GroupBy(x => x.Adresse).Select(y => y.First()).ToList();
 
                     if (settings.SaveToDatabase)
                     {
@@ -88,7 +92,7 @@ namespace Bolighoesteren
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Something bad happened");
+                _logger.Error(ex, "Something bad happened in Bolighoesteren");
             }
         }
     }

@@ -21,7 +21,19 @@ namespace FilterLibrary
 
         public override List<IEjendom> GetProperties(string postcode, string photoFolderPath)
         {
-            throw new NotImplementedException();
+            List<IEjendom> properties = new List<IEjendom>();
+
+            properties = GetAddress(properties);
+
+            properties = GetPrice(properties);
+
+            properties = GetPhoto(properties, photoFolderPath);
+
+            properties = GetLink(properties);
+
+            properties = GetEjerudgifter(properties); // Kun nogle ejendomme har specs, og man skal trykke på "Se flere" før man kan se dem. Men htmlagilitypack kan IKKE klikke.
+
+            return properties;
         }
 
         private List<IEjendom> GetAddress(List<IEjendom> properties)
@@ -44,7 +56,7 @@ namespace FilterLibrary
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Something bad happened");
+                _logger.Error(ex, "Something bad happened in GetAddress");
                 //Console.WriteLine(ex);
             }
 
@@ -68,7 +80,7 @@ namespace FilterLibrary
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Something bad happened");
+                _logger.Error(ex, "Something bad happened in GetPrice");
                 //Console.WriteLine(ex);
             }
 
@@ -104,7 +116,7 @@ namespace FilterLibrary
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Something bad happened");
+                _logger.Error(ex, "Something bad happened in GetPhoto");
                 //Console.WriteLine(ex);
             }
 
@@ -131,14 +143,14 @@ namespace FilterLibrary
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Something bad happened");
+                _logger.Error(ex, "Something bad happened in GetLink");
                 //Console.WriteLine(ex);
             }
 
             return properties;
         }
 
-        private List<IEjendom> GetTableInfo(List<IEjendom> properties)
+        private List<IEjendom> GetEjerudgifter(List<IEjendom> properties)
         {
             try
             {
@@ -163,7 +175,7 @@ namespace FilterLibrary
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Something bad happened");
+                _logger.Error(ex, "Something bad happened in GetEjerudgifter");
                 //Console.WriteLine(ex);
             }
 
